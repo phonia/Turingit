@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfRole xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Role>
+    <Id>SuperManager</Id>
+    <Name>超级管理员</Name>
+  </Role>
+  <Role>
+    <Id>RegisterUser</Id>
+    <Name>注册用户</Name>
+  </Role>
+</ArrayOfRole>
