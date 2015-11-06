@@ -38,7 +38,7 @@ namespace TuringLWCF
         /// <returns>修改成功则返回用户信息：UserView,失败则返回失败信息:false</returns>
         [OperationContract]
         [WebInvoke(RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped)]
-        string UpdateUser(string updateUser);
+        string UpdateUser(string loginUser,string updateUser);
 
         /// <summary>
         /// 
@@ -47,7 +47,7 @@ namespace TuringLWCF
         /// <returns>成功返回True:False</returns>
         [OperationContract]
         [WebInvoke(RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped)]
-        string DelUser(string UserId);
+        string DelUser(string userId);
 
         /// <summary>
         /// 

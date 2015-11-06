@@ -70,9 +70,24 @@ namespace TuringLWCF
             }
         }
 
-        public string Update(string loginUser, string updateUser)
+        public string UpdateUser(string loginUser,string updateUser)
         {
-            throw new NotImplementedException();
+            if (loginUser == null || loginUser == String.Empty || updateUser == null || updateUser == String.Empty)
+            {
+                return JsonHelper.SerializeObject("false:no enough parms!");
+            }
+            UserView userView = JsonHelper.DeserializeObject<UserView>(updateUser);
+            if(userView==null)
+            {
+                return JsonHelper.SerializeObject("false:no enough parms!");
+            }
+            UpdateUserResponse response = _userService.UpdateUser(new UpdateUserRequest() { Duty=userView.Duty,Email=userView.Email,Id=userView.Id,Name=userView.Name,
+            Password=userView.Password,RoleId=userView.RoleId});
+            if (response.IsSucess == false || response.User == null)
+            {
+                return JsonHelper.SerializeObject("false:update error!");
+            }
+            return JsonHelper.SerializeObject(response.User);
         }
 
         public string GetRoles()
@@ -80,7 +95,8 @@ namespace TuringLWCF
             GetRolesListResponse response = _userService.GetRolesList(new GetRolesListRequest());
             if (response.IsSucess && response.Roles != null)
             {
-                return JsonHelper.SerializeObject(response.Roles);
+                List<RoleView> list = response.Roles.Where(it => !it.Id.Equals("SuperManager")).ToList();
+                return JsonHelper.SerializeObject(list);
             }
             else
             {
@@ -88,22 +104,22 @@ namespace TuringLWCF
             }
         }
 
-        public string UpdateUser(string updateUser)
+        public string DelUser(string userId)
         {
-            throw new NotImplementedException();
-        }
-
-        public string DelUser(string UserId)
-        {
-            throw new NotImplementedException();
+            DelUserResponse response = _userService.DelUser(new DelUserRequest() {Id=userId });
+            if (response.IsSucess == false)
+                return JsonHelper.SerializeObject("false:error!");
+            else
+                return JsonHelper.SerializeObject("sucess!");
         }
 
         public string GetAllUsers()
         {
-            GetRolesListResponse response = _userService.GetRolesList(new GetRolesListRequest());
-            if (response.IsSucess && response.Roles != null && response.Roles.Count > 0)
+            GetUsersListResponse response = _userService.GetUserList(new GetUsersListRequest() { SearchProperty = string.Empty, SearchValue = string.Empty });
+            if (response.IsSucess && response.Users != null)
             {
-                return JsonHelper.SerializeObject(response.Roles);
+                List<UserView> list = response.Users.Where(it => !it.RoleId.Equals("SuperManager")).ToList();
+                return JsonHelper.SerializeObject(list);
             }
             else
             {

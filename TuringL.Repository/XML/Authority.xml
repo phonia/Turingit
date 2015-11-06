@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ArrayOfAuthority xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Authority>
-    <Id>Register</Id>
-    <Name>注册</Name>
+    <Id>UserManager</Id>
+    <Name>用户管理</Name>
   </Authority>
 </ArrayOfAuthority>

@@ -8,4 +8,8 @@
     <Id>RegisterUser</Id>
     <Name>注册用户</Name>
   </Role>
+  <Role>
+    <Id>Manager</Id>
+    <Name>管理员</Name>
+  </Role>
 </ArrayOfRole>
