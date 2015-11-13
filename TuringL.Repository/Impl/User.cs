@@ -206,51 +206,10 @@ namespace TuringL.Repository
     {
         public UserUnitOfWorkRepository(IUnitOfWork unitOfWork) : base(unitOfWork) { }
 
-        private DataContext data = ContextFactory.GetDataContext();
-
         public override User GetByKey(Guid Id)
         {
-            var user=(from b in data.Users.Where(it=>it.Id==Id) select b).FirstOrDefault();
+            var user = (GetAll() as IQueryable<User>).Where(it => it.Id == Id).FirstOrDefault();
             return user;
-        }
-
-        public override void PersistAdd(IAggregateRoot entity)
-        {
-            if (entity == null) return;
-            data.Users.Add(entity as User);
-            int ret = data.SaveChanges();
-            if (ret != 1)
-                throw new Exception("error in PersistAdd method of UserUnitOfWorkRepository!");
-        }
-
-        public override void PersistDel(IAggregateRoot entity)
-        {
-            if (entity == null) return;
-            System.Guid id = (entity as User).Id;
-            var user = (from b in data.Users.Where(it => it.Id == id) select b).FirstOrDefault();
-            if (user == null)
-                throw new Exception("error in PersistDel Of UserUnitOfWorkRepository!");
-            else
-            {
-                data.Users.Remove(user);
-                int ret = data.SaveChanges();
-                if (ret != 1)
-                    throw new Exception("error in PersistDel Of UserUnitOfWorkRepository!");
-            }
-        }
-
-        public override void PersistSave(IAggregateRoot entity)
-        {
-            if (entity == null) return;
-            data.Entry(entity as User).State = EntityState.Modified;
-            int ret = data.SaveChanges();
-            if (ret != 1)
-                throw new Exception("error in PersistSave Of UserUnitOfworkRepository!");
-        }
-
-        public override IQueryable<User> GetAll()
-        {
-            return data.Users;
         }
     }
 }

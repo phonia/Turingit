@@ -1,5 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<useCaseModelRoot xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm4="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm5="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/ModelStore" xmlns:dm9="http://schemas.microsoft.com/dsltools/LogicalClassDesigner" xmlns:dm10="http://schemas.microsoft.com/dsltools/SimpleShapesModel" dslVersion="1.0.0.0" Id="72a74c94-f848-4093-8474-3cd34fdd2b24" name="WareHouse" linkedPackageId="a1a28e1e-7969-445a-bff5-0774367e93f0" xmlns="http://schemas.microsoft.com/dsltools/UseCaseModel">
+<useCaseModelRoot xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm4="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm5="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/ModelStore" xmlns:dm9="http://schemas.microsoft.com/dsltools/SimpleShapesModel" xmlns:dm10="http://schemas.microsoft.com/VisualStudio/TeamArchitect/ActivityDesigner" dslVersion="1.0.0.0" Id="72a74c94-f848-4093-8474-3cd34fdd2b24" name="WareHouse" linkedPackageId="a1a28e1e-7969-445a-bff5-0774367e93f0" xmlns="http://schemas.microsoft.com/dsltools/UseCaseModel">
+  <profileInstances>
+    <packageHasProfileInstances Id="b6c3a967-65cc-4cc9-93c6-48b17c806576">
+      <profileInstance Id="1bfd98f9-cabc-4d0a-b8b3-a5436e378b05" name="StandardProfileL2">
+        <elementDefinition Id="e34d544e-0fea-4ed6-ac5e-1b74119ac791" />
+      </profileInstance>
+      <elementDefinition Id="0caec977-1f8c-4ba3-a7db-8cc9ad9cc73b" />
+    </packageHasProfileInstances>
+    <packageHasProfileInstances Id="7c1f0d2f-f088-4b7c-91bd-def4bc15ccc8">
+      <profileInstance Id="1be1303d-b20c-4aea-a836-42ce00078ffd" name="StandardProfileL3">
+        <elementDefinition Id="532ea607-fb19-44b8-8502-3351b05452be" />
+      </profileInstance>
+      <elementDefinition Id="29349502-908c-4fda-9054-c48619c59ed0" />
+    </packageHasProfileInstances>
+  </profileInstances>
   <packagedElements>
     <useCaseModelRootHasTypes>
       <subsystem Id="f72f1f8d-17eb-42ea-afbb-cb34be022441" name="仓储子系统" isAbstract="false" isLeaf="false" isActiveClass="false">
@@ -265,7 +279,7 @@
       </useCase>
     </packageHasNamedElement>
     <packageHasNamedElement>
-      <useCase Id="7801c34c-6d6f-4b34-bc94-b626c9b58b12" name="产品设计变更" isAbstract="false" isLeaf="false">
+      <useCase Id="7801c34c-6d6f-4b34-bc94-b626c9b58b12" name="产品变更" isAbstract="false" isLeaf="false">
         <elementDefinition Id="46ea2e0b-d4d8-4598-bd6a-ac1ca7693a50" />
         <generalsInternal>
           <generalization Id="511f50f9-3ff6-4942-83a7-a799b53bb0e5" isSubstitutable="false">
@@ -323,7 +337,7 @@
       </useCase>
     </packageHasNamedElement>
     <packageHasNamedElement>
-      <useCase Id="4baefa2e-1217-461d-883b-70284fffc68e" name="删除（超级管理员限定）" isAbstract="false" isLeaf="false">
+      <useCase Id="4baefa2e-1217-461d-883b-70284fffc68e" name="删除（）" isAbstract="false" isLeaf="false">
         <elementDefinition Id="a2a6083c-781d-4492-9730-68b332374a98" />
         <subjects>
           <subsystemMoniker Id="0ae6639e-3639-4e76-9f91-2966d2e22d85" LastKnownName="研发子系统" />
@@ -394,7 +408,7 @@
       </useCase>
     </packageHasNamedElement>
     <packageHasNamedElement>
-      <useCase Id="786507d1-3900-4426-862d-d5d0113c7cb2" name="单条产品研发信息" isAbstract="false" isLeaf="false">
+      <useCase Id="786507d1-3900-4426-862d-d5d0113c7cb2" name="研发信息" isAbstract="false" isLeaf="false">
         <elementDefinition Id="c1a5307f-f864-46c1-9d74-60189b88e126" />
         <generalsInternal>
           <generalization Id="814828bd-be45-4c1a-9148-30dadad3ea41" isSubstitutable="false">
@@ -408,7 +422,7 @@
       </useCase>
     </packageHasNamedElement>
     <packageHasNamedElement>
-      <useCase Id="d68a5d8b-a80e-4631-a795-6e072bb64a48" name="产品系统研发信息" isAbstract="false" isLeaf="false">
+      <useCase Id="d68a5d8b-a80e-4631-a795-6e072bb64a48" name="产品系统" isAbstract="false" isLeaf="false">
         <elementDefinition Id="2c6069c8-83c8-438f-86a1-f43165436843" />
         <generalsInternal>
           <generalization Id="d6dd3d51-1022-4f05-9d42-8e8fcd16c61b" isSubstitutable="false">
@@ -422,7 +436,7 @@
       </useCase>
     </packageHasNamedElement>
     <packageHasNamedElement>
-      <useCase Id="8ba88590-e72a-41cf-ae70-3f30c850c05f" name="产品镞研发信息" isAbstract="false" isLeaf="false">
+      <useCase Id="8ba88590-e72a-41cf-ae70-3f30c850c05f" name="产品镞" isAbstract="false" isLeaf="false">
         <elementDefinition Id="dd3ab8ae-b243-44e9-b4ea-5ce95217a777" />
         <generalsInternal>
           <generalization Id="8484e16b-b600-43ff-ae6a-cb02f1062df5" isSubstitutable="false">
@@ -889,19 +903,5 @@
   </packagedElements>
   <package Id="a1a28e1e-7969-445a-bff5-0774367e93f0" name="TuringL.UML">
     <elementDefinition Id="b55f5fc0-defb-4660-a821-c020b368e64d" />
-    <profileInstances>
-      <packageHasProfileInstances Id="b6c3a967-65cc-4cc9-93c6-48b17c806576">
-        <profileInstance Id="1bfd98f9-cabc-4d0a-b8b3-a5436e378b05" name="StandardProfileL2">
-          <elementDefinition Id="e34d544e-0fea-4ed6-ac5e-1b74119ac791" />
-        </profileInstance>
-        <elementDefinition Id="0caec977-1f8c-4ba3-a7db-8cc9ad9cc73b" />
-      </packageHasProfileInstances>
-      <packageHasProfileInstances Id="7c1f0d2f-f088-4b7c-91bd-def4bc15ccc8">
-        <profileInstance Id="1be1303d-b20c-4aea-a836-42ce00078ffd" name="StandardProfileL3">
-          <elementDefinition Id="532ea607-fb19-44b8-8502-3351b05452be" />
-        </profileInstance>
-        <elementDefinition Id="29349502-908c-4fda-9054-c48619c59ed0" />
-      </packageHasProfileInstances>
-    </profileInstances>
   </package>
 </useCaseModelRoot>

@@ -62,18 +62,15 @@ namespace RepositoryTest
         #endregion
 
         protected IUnitOfWork _unitOfWork = null;
-        protected IRepositoryFactory _repositoryFactory = null;
 
         [TestMethod]
         public void Add()
         {
             try
             {
-                _repositoryFactory = new RepositoryFactory();
-                _repositoryFactory.Begin();
-                _unitOfWork = _repositoryFactory.UnitOfWork;
+                _unitOfWork = RepositoryFactory.GetUnitOfWork();
 
-                IAuthorityRepository authorityRepository = _repositoryFactory.Get(typeof(IAuthorityRepository),_unitOfWork) as IAuthorityRepository;
+                IAuthorityRepository authorityRepository = RepositoryFactory.Get(typeof(IAuthorityRepository), _unitOfWork) as IAuthorityRepository;
                 List<Authority> list = authorityRepository.GetAll().ToList();
                 if (list == null) list = new List<Authority>();
                 if (list.Where(it => it.Id.Equals("Login")).FirstOrDefault() == null)
@@ -87,7 +84,6 @@ namespace RepositoryTest
                 
 
                 _unitOfWork.Commit();
-                _repositoryFactory.End();
             }
             catch (Exception ex)
             {
@@ -98,59 +94,47 @@ namespace RepositoryTest
         [TestMethod]
         public void GetByKey()
         {
-            _repositoryFactory = new RepositoryFactory();
-            _repositoryFactory.Begin();
-            _unitOfWork = _repositoryFactory.UnitOfWork;
+            _unitOfWork = RepositoryFactory.GetUnitOfWork();
 
-            IAuthorityRepository authorityRepository = _repositoryFactory.Get(typeof(IAuthorityRepository), _unitOfWork) as IAuthorityRepository;
+            IAuthorityRepository authorityRepository = RepositoryFactory.Get(typeof(IAuthorityRepository), _unitOfWork) as IAuthorityRepository;
             Authority authority= authorityRepository.GetByKey("Login");
             Assert.AreEqual<Authority>(new Authority() { Id = "Login", Name = "登录" }, authority);
 
             _unitOfWork.Commit();
-            _repositoryFactory.End();
         }
 
         [TestMethod]
         public void GetAll()
         {
-            _repositoryFactory = new RepositoryFactory();
-            _repositoryFactory.Begin();
-            _unitOfWork = _repositoryFactory.UnitOfWork;
+            _unitOfWork = RepositoryFactory.GetUnitOfWork();
 
-            IAuthorityRepository authorityRepository = _repositoryFactory.Get(typeof(IAuthorityRepository), _unitOfWork) as IAuthorityRepository;
+            IAuthorityRepository authorityRepository = RepositoryFactory.Get(typeof(IAuthorityRepository), _unitOfWork) as IAuthorityRepository;
             List<Authority> list = authorityRepository.GetAll().ToList();
             Assert.IsTrue(list != null && list.Count > 0);
 
             _unitOfWork.Commit();
-            _repositoryFactory.End();
         }
 
         [TestMethod]
         public void Update()
         {
-            _repositoryFactory = new RepositoryFactory();
-            _repositoryFactory.Begin();
-            _unitOfWork = _repositoryFactory.UnitOfWork;
+            _unitOfWork = RepositoryFactory.GetUnitOfWork();
 
-            IAuthorityRepository authorityRepository = _repositoryFactory.Get(typeof(IAuthorityRepository), _unitOfWork) as IAuthorityRepository;
+            IAuthorityRepository authorityRepository = RepositoryFactory.Get(typeof(IAuthorityRepository), _unitOfWork) as IAuthorityRepository;
             authorityRepository.Save(new Authority() { Id = "Register", Name = "二次注册" });
 
             _unitOfWork.Commit();
-            _repositoryFactory.End();
         }
 
         [TestMethod]
         public void Del()
         {
-            _repositoryFactory = new RepositoryFactory();
-            _repositoryFactory.Begin();
-            _unitOfWork = _repositoryFactory.UnitOfWork;
+            _unitOfWork = RepositoryFactory.GetUnitOfWork();
 
-            IAuthorityRepository authorityRepository = _repositoryFactory.Get(typeof(IAuthorityRepository), _unitOfWork) as IAuthorityRepository;
+            IAuthorityRepository authorityRepository = RepositoryFactory.Get(typeof(IAuthorityRepository), _unitOfWork) as IAuthorityRepository;
             authorityRepository.Del(new Authority() { Id = "Register", Name = "二次注册" });
 
             _unitOfWork.Commit();
-            _repositoryFactory.End();
         }
     }
 }

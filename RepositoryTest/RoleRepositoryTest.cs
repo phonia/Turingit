@@ -22,7 +22,6 @@ namespace RepositoryTest
         }
 
         protected IUnitOfWork _unitOfWork = null;
-        protected IRepositoryFactory _repositoryFactory = null;
 
         private TestContext testContextInstance;
 
@@ -163,15 +162,12 @@ namespace RepositoryTest
         {
             try
             {
-                _repositoryFactory = new RepositoryFactory();
-                _repositoryFactory.Begin();
-                _unitOfWork = _repositoryFactory.UnitOfWork;
-                IRoleRepository roleRepository = _repositoryFactory.Get(typeof(IRoleRepository), _unitOfWork) as IRoleRepository;
+                _unitOfWork = RepositoryFactory.GetUnitOfWork();
+                IRoleRepository roleRepository = RepositoryFactory.Get(typeof(IRoleRepository), _unitOfWork) as IRoleRepository;
                 Role role = roleRepository.GetByKey("TestUser");
                 Role expect = new Role() { Id = "TestUser", Name = "测试用户" };
                 Assert.AreEqual<Role>(expect,role);
                 _unitOfWork.Commit();
-                _repositoryFactory.End();
             }
             catch (Exception ex)
             {
@@ -184,18 +180,15 @@ namespace RepositoryTest
         {
             try
             {
-                _repositoryFactory = new RepositoryFactory();
-                _repositoryFactory.Begin();
-                _unitOfWork = _repositoryFactory.UnitOfWork;
+                _unitOfWork = RepositoryFactory.GetUnitOfWork();
 
-                IRoleRepository roleRepository = _repositoryFactory.Get(typeof(IRoleRepository), _unitOfWork) as IRoleRepository;
+                IRoleRepository roleRepository = RepositoryFactory.Get(typeof(IRoleRepository), _unitOfWork) as IRoleRepository;
                 if (roleRepository.GetByKey("TestUser") == null)
                 {
                     roleRepository.Add(new Role() { Id = "TestUser", Name = "测试用户" });
                 }
 
                 _unitOfWork.Commit();
-                _repositoryFactory.End();
             }
             catch (Exception ex)
             {
@@ -208,16 +201,13 @@ namespace RepositoryTest
         {
             try
             {
-                _repositoryFactory = new RepositoryFactory();
-                _repositoryFactory.Begin();
-                _unitOfWork = _repositoryFactory.UnitOfWork;
+                _unitOfWork = RepositoryFactory.GetUnitOfWork();
 
-                IRoleRepository roleRepository = _repositoryFactory.Get(typeof(IRoleRepository), _unitOfWork) as IRoleRepository;
+                IRoleRepository roleRepository = RepositoryFactory.Get(typeof(IRoleRepository), _unitOfWork) as IRoleRepository;
                 Role role = new Role() { Id = "TestUser", Name = "二次测试用户" };
                 roleRepository.Save(role);
 
                 _unitOfWork.Commit();
-                _repositoryFactory.End();
             }
             catch (Exception ex)
             {
@@ -230,16 +220,13 @@ namespace RepositoryTest
         {
             try
             {
-                _repositoryFactory = new RepositoryFactory();
-                _repositoryFactory.Begin();
-                _unitOfWork = _repositoryFactory.UnitOfWork;
+                _unitOfWork = RepositoryFactory.GetUnitOfWork();
 
-                IRoleRepository roleRepository = _repositoryFactory.Get(typeof(IRoleRepository), _unitOfWork) as IRoleRepository;
+                IRoleRepository roleRepository = RepositoryFactory.Get(typeof(IRoleRepository), _unitOfWork) as IRoleRepository;
                 Role role = new Role() { Id = "TestUser", Name = "二次测试用户" };
                 roleRepository.Del(role);
 
                 _unitOfWork.Commit();
-                _repositoryFactory.End();
             }
             catch (Exception ex)
             {

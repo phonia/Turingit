@@ -5,8 +5,15 @@ using System.Text;
 
 namespace TuringL.Infrasturcture.Log
 {
-    interface ILog
+
+    public class Log
     {
-        void Write(string message);
+        private static object _lockObject = new object();
+
+        public static void Write(string message)
+        {
+            lock (_lockObject)
+            { }
+        }
     }
 }

@@ -7,32 +7,20 @@ using TuringL.Models;
 
 namespace TuringL.Repository
 {
-    public class RepositoryFactory :IRepositoryFactory
+    public class RepositoryFactory 
     {
-        private List<IUnitOfWorkRepository> _list = new List<IUnitOfWorkRepository>();
 
         private static readonly Dictionary<Type, Type> _dict = new Dictionary<Type, Type>() { 
                                                                 {typeof(IRoleRepository),typeof(RoleUnitOfWorkRepository)},
                                                                 {typeof(IAuthorityRepository),typeof(AuthorityUnitOfWorkRepository)},
                                                                 {typeof(IAuthorizeRepository),typeof(AuthorizeUnitOfWorkRepository)},
-                                                                {typeof(IUserRepository),typeof(UserUnitOfWorkRepository)}
+                                                                {typeof(IUserRepository),typeof(UserUnitOfWorkRepository)},
+                                                                {typeof(IProductInfoRepository),typeof(ProductInfoUnitOfWorkRepository)}
                                                                 };
 
-        public IUnitOfWork UnitOfWork { get; set; }
-
-        public RepositoryFactory()
+        public static IUnitOfWorkRepository Get(Type type,IUnitOfWork unitOfWork)
         {
-        }
-
-        public void Begin()
-        {
-            ContextFactory.StoreContext();
-            UnitOfWork = new UnitOfWork();
-        }
-
-        public IUnitOfWorkRepository Get(Type type,IUnitOfWork unitOfWork)
-        {
-            IUnitOfWorkRepository uow = _list.Where(it => it.GetType() == type).FirstOrDefault();
+            IUnitOfWorkRepository uow = null;// _list.Where(it => it.GetType() == type).FirstOrDefault();
             if (uow == null)
             {
                 try
@@ -47,11 +35,9 @@ namespace TuringL.Repository
             return uow;
         }
 
-        public void End()
+        public static IUnitOfWork GetUnitOfWork()
         {
-            _list.Clear();
-            UnitOfWork = null;
-            ContextFactory.Dispose();
+            return new UnitOfWork();
         }
     }
 }

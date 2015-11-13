@@ -33,7 +33,7 @@ namespace TuringL.Models
                 sb.Clear();
                 foreach (var item in _brokenRules)
                 {
-                    sb.AppendLine(item.Property + ":" + item.Rule);
+                    sb.Append(item.Property + ":" + item.Rule+" ");
                 }
                 throw new Exception(sb.ToString());
             }

@@ -29,6 +29,13 @@
       <SubType>Content</SubType>
       <DependentUpon>Class\Domain.classdiagram</DependentUpon>
     </Content>
+    <Content Include="Class\DomianReset.classdiagram">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Class\DomianReset.classdiagram.layout">
+      <SubType>Content</SubType>
+      <DependentUpon>Class\DomianReset.classdiagram</DependentUpon>
+    </Content>
     <Content Include="UseCase\UseCase.usecasediagram">
       <SubType>Content</SubType>
     </Content>

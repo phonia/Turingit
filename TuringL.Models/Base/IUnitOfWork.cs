@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TuringL.Models
 {
-    public interface IUnitOfWork
+    public interface IUnitOfWork:IDisposable
     {
         void RegisterAdd(IAggregateRoot entity, IUnitOfWorkRepository unitOfWorkRepository);
         void RegisterDel(IAggregateRoot entity, IUnitOfWorkRepository unitOfWorkRepository);

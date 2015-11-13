@@ -4,12 +4,20 @@ using System.Linq;
 using System.Text;
 using TuringL.Models;
 using System.Transactions;
+using System.Threading;
 
 namespace TuringL.Repository
 {
     public class UnitOfWork:IUnitOfWork
     {
         private Queue<UnitItem> _ItemQueue = new Queue<UnitItem>();
+        private DataContext _dataContext = null;
+
+        public UnitOfWork()
+        {
+            ContextFactory.StoreContext(Thread.CurrentThread.ManagedThreadId + Thread.CurrentThread.Name);
+            _dataContext = ContextFactory.GetDataContext(Thread.CurrentThread.ManagedThreadId + Thread.CurrentThread.Name);
+        }
 
         public void RegisterAdd(IAggregateRoot entity, IUnitOfWorkRepository unitOfWorkRepository)
         {
@@ -63,7 +71,6 @@ namespace TuringL.Repository
             {
                 using (TransactionScope trans = new TransactionScope(TransactionScopeOption.Required, new TimeSpan(0, 5, 0)))
                 {
-                    ContextFactory.GetDataContext();
                     while (_ItemQueue.Count > 0)
                     {
                         UnitItem item = _ItemQueue.Dequeue();
@@ -81,10 +88,15 @@ namespace TuringL.Repository
                             default: break;
                         }
                     }
-                    ContextFactory.GetDataContext().SaveChanges();
+                    ContextFactory.GetDataContext(Thread.CurrentThread.ManagedThreadId + Thread.CurrentThread.Name).SaveChanges();
                     trans.Complete();
                 }
             }
+        }
+
+        public void Dispose()
+        {
+            ContextFactory.Remove(Thread.CurrentThread.ManagedThreadId + Thread.CurrentThread.Name);
         }
     }
 

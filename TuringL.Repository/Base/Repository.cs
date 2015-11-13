@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using TuringL.Infrasturcture.Log;
 using TuringL.Models;
 
 namespace TuringL.Repository
 {
-    public abstract class Repository<T,Tld>:IUnitOfWorkRepository where T:IAggregateRoot
+    public abstract class Repository<T,Tld>:IUnitOfWorkRepository where T:class,IAggregateRoot
     {
         private IUnitOfWork _unitOfWork = null;
+        protected DataContext _dataContext = ContextFactory.GetDataContext(Thread.CurrentThread.ManagedThreadId + Thread.CurrentThread.Name);
 
         public Repository(IUnitOfWork unitOfWork)
         {
@@ -32,12 +36,35 @@ namespace TuringL.Repository
 
         public abstract T GetByKey(Tld Id);
 
-        public abstract void PersistAdd(IAggregateRoot entity);
+        public virtual void PersistAdd(IAggregateRoot entity)
+        {
+            if (entity == null) throw new Exception("nullable data in PersistAdd of Respository<"+typeof(T).Name+">");
+            _dataContext.Entry<IAggregateRoot>(entity).State = EntityState.Added;
+            if (_dataContext.SaveChanges() < 1)
+            {
+                throw new Exception("error in PersistAdd of Respository<T>");
+            }
+        }
 
-        public abstract void PersistDel(IAggregateRoot entity);
+        public virtual void PersistDel(IAggregateRoot entity)
+        {
+            if (entity == null) throw new Exception("nullable data in PersistDel of Respository<"+typeof(T).Name+">");
+            _dataContext.Entry<IAggregateRoot>(entity).State=EntityState.Deleted;
+            if(_dataContext.SaveChanges()<1)
+                throw new Exception("error in PersistDel of Respository<T>"); 
+        }
 
-        public abstract void PersistSave(IAggregateRoot entity);
+        public virtual void PersistSave(IAggregateRoot entity)
+        {
+            if (entity == null) throw new Exception("nullable data in PersistSave of Respository<" + typeof(T).Name + ">");
+            _dataContext.Entry<IAggregateRoot>(entity).State = EntityState.Modified;
+            if (_dataContext.SaveChanges() < 1)
+                throw new Exception("error in PersistSave of Respository<T>"); 
+        }
 
-        public abstract IQueryable<T> GetAll();
+        public virtual IQueryable<T> GetAll()
+        {
+            return _dataContext.Set<T>() as IQueryable<T>;
+        }
     }
 }

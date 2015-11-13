@@ -62,25 +62,21 @@ namespace RepositoryTest
         #endregion
 
         protected IUnitOfWork _unitOfWork = null;
-        protected IRepositoryFactory _repositoryFactory = null;
 
         [TestMethod]
         public void Add()
         {
             try
             {
-                _repositoryFactory = new RepositoryFactory();
-                _repositoryFactory.Begin();
-                _unitOfWork = _repositoryFactory.UnitOfWork;
+                _unitOfWork = RepositoryFactory.GetUnitOfWork();
 
-                IUserRepository userRepository = _repositoryFactory.Get(typeof(IUserRepository), _unitOfWork) as IUserRepository;
+                IUserRepository userRepository = RepositoryFactory.Get(typeof(IUserRepository), _unitOfWork) as IUserRepository;
                 if (userRepository.GetByKey(_id) == null)
                 {
                     userRepository.Add(new User() { Id = _id, Duty = "管理员", Name = "hy", Email = "bbs", RoleId = "SuperManager",Password="hy" });
                 }
 
                 _unitOfWork.Commit();
-                _repositoryFactory.End();
             }
             catch (Exception ex)
             {
@@ -93,16 +89,13 @@ namespace RepositoryTest
         {
             try
             {
-                _repositoryFactory = new RepositoryFactory();
-                _repositoryFactory.Begin();
-                _unitOfWork = _repositoryFactory.UnitOfWork;
+                _unitOfWork = RepositoryFactory.GetUnitOfWork();
 
-                IUserRepository userRepository = _repositoryFactory.Get(typeof(IUserRepository), _unitOfWork) as IUserRepository;
+                IUserRepository userRepository = RepositoryFactory.Get(typeof(IUserRepository), _unitOfWork) as IUserRepository;
                 List<User> list = userRepository.GetAll().ToList();
                 Assert.IsTrue(list != null && list.Count > 0);
 
                 _unitOfWork.Commit();
-                _repositoryFactory.End();
             }
             catch (Exception ex)
             {
@@ -117,41 +110,36 @@ namespace RepositoryTest
         {
             try
             {
-                _repositoryFactory = new RepositoryFactory();
-                _repositoryFactory.Begin();
-                _unitOfWork = _repositoryFactory.UnitOfWork;
+                _unitOfWork = RepositoryFactory.GetUnitOfWork();
 
-                IUserRepository userRepository = _repositoryFactory.Get(typeof(IUserRepository), _unitOfWork) as IUserRepository;
+                IUserRepository userRepository = RepositoryFactory.Get(typeof(IUserRepository), _unitOfWork) as IUserRepository;
                 User user = userRepository.GetByKey(_id);
 
                 Assert.AreEqual<System.Guid>(user.Id, _id);
 
                 _unitOfWork.Commit();
-                _repositoryFactory.End();
             }
             catch (Exception ex)
             {
                 Assert.IsTrue(false);
             }
         }
+
         [TestMethod]
         public void Save()
         {
 
             try
             {
-                _repositoryFactory = new RepositoryFactory();
-                _repositoryFactory.Begin();
-                _unitOfWork = _repositoryFactory.UnitOfWork;
+                _unitOfWork = RepositoryFactory.GetUnitOfWork();
 
-                IUserRepository userRepository = _repositoryFactory.Get(typeof(IUserRepository), _unitOfWork) as IUserRepository;
+                IUserRepository userRepository = RepositoryFactory.Get(typeof(IUserRepository), _unitOfWork) as IUserRepository;
 
                 User user = userRepository.GetByKey(_id);
                 user.Name = "polan";
                 userRepository.Save(user);
 
                 _unitOfWork.Commit();
-                _repositoryFactory.End();
             }
             catch (Exception ex)
             {
@@ -164,15 +152,12 @@ namespace RepositoryTest
         {
             try
             {
-                _repositoryFactory = new RepositoryFactory();
-                _repositoryFactory.Begin();
-                _unitOfWork = _repositoryFactory.UnitOfWork;
+                _unitOfWork = RepositoryFactory.GetUnitOfWork();
 
-                IUserRepository userRepository = _repositoryFactory.Get(typeof(IUserRepository), _unitOfWork) as IUserRepository;
+                IUserRepository userRepository = RepositoryFactory.Get(typeof(IUserRepository), _unitOfWork) as IUserRepository;
                 userRepository.Del(new User() { Id = _id });
 
                 _unitOfWork.Commit();
-                _repositoryFactory.End();
             }
             catch (Exception ex)
             {

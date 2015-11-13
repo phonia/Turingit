@@ -11,20 +11,20 @@ namespace TuringL.Repository
     {
         private static Dictionary<string, DataContext> _dict = new Dictionary<string, DataContext>();
 
-        public static DataContext GetDataContext()
+        public static DataContext GetDataContext(string key)
         {
-            if (!_dict.ContainsKey(Thread.CurrentThread.ManagedThreadId+Thread.CurrentThread.Name))
+            if (!_dict.ContainsKey(key))
             {
                 throw new Exception("not existence context in container");
             }
-            return _dict[Thread.CurrentThread.ManagedThreadId + Thread.CurrentThread.Name];
+            return _dict[key];
         }
 
-        public static void StoreContext()
+        public static void StoreContext(string key)
         {
-            if (!_dict.ContainsKey(Thread.CurrentThread.ManagedThreadId + Thread.CurrentThread.Name))
+            if (!_dict.ContainsKey(key))
             {
-                _dict.Add(Thread.CurrentThread.ManagedThreadId + Thread.CurrentThread.Name, new DataContext());
+                _dict.Add(key, new DataContext());
             }
             else
             {
@@ -32,12 +32,12 @@ namespace TuringL.Repository
             }
         }
 
-        public static void Dispose()
+        public static void Remove(string key)
         {
-            if (_dict.ContainsKey(Thread.CurrentThread.ManagedThreadId + Thread.CurrentThread.Name))
+            if (_dict.ContainsKey(key))
             {
-                _dict[Thread.CurrentThread.ManagedThreadId + Thread.CurrentThread.Name].Dispose();
-                _dict.Remove(Thread.CurrentThread.ManagedThreadId + Thread.CurrentThread.Name);
+                _dict[key].Dispose();
+                _dict.Remove(key);
             }
         }
     }

@@ -62,18 +62,15 @@ namespace RepositoryTest
         #endregion
 
         protected IUnitOfWork _unitOfWork = null;
-        protected IRepositoryFactory _repositoryFactory = null;
 
         [TestMethod]
         public void Add()
         {
             try
             {
-                _repositoryFactory = new RepositoryFactory();
-                _repositoryFactory.Begin();
-                _unitOfWork = _repositoryFactory.UnitOfWork;
+                _unitOfWork = RepositoryFactory.GetUnitOfWork();
 
-                IAuthorizeRepository authorizeRepository = _repositoryFactory.Get(typeof(IAuthorizeRepository), _unitOfWork) as IAuthorizeRepository;
+                IAuthorizeRepository authorizeRepository = RepositoryFactory.Get(typeof(IAuthorizeRepository), _unitOfWork) as IAuthorizeRepository;
                 List<Authorize> list = authorizeRepository.GetAll().ToList();
                 if (list == null) list = new List<Authorize>();
                 if (list.Where(it => it.AuthorityName.Equals("Login")).FirstOrDefault() == null)
@@ -87,7 +84,6 @@ namespace RepositoryTest
 
 
                 _unitOfWork.Commit();
-                _repositoryFactory.End();
             }
             catch (Exception ex)
             {
@@ -98,59 +94,47 @@ namespace RepositoryTest
         [TestMethod]
         public void GetByKey()
         {
-            _repositoryFactory = new RepositoryFactory();
-            _repositoryFactory.Begin();
-            _unitOfWork = _repositoryFactory.UnitOfWork;
+            _unitOfWork = RepositoryFactory.GetUnitOfWork();
 
-            IAuthorizeRepository authorizeRepository = _repositoryFactory.Get(typeof(IAuthorizeRepository), _unitOfWork) as IAuthorizeRepository;
+            IAuthorizeRepository authorizeRepository = RepositoryFactory.Get(typeof(IAuthorizeRepository), _unitOfWork) as IAuthorizeRepository;
             Authorize authorize = authorizeRepository.GetByKey("Login");
             Assert.AreEqual<Authorize>(new Authorize() { AuthorityName = "Login", RoleName = "SuperManager,RegisterUser" }, authorize);
 
             _unitOfWork.Commit();
-            _repositoryFactory.End();
         }
 
         [TestMethod]
         public void GetAll()
         {
-            _repositoryFactory = new RepositoryFactory();
-            _repositoryFactory.Begin();
-            _unitOfWork = _repositoryFactory.UnitOfWork;
+            _unitOfWork = RepositoryFactory.GetUnitOfWork();
 
-            IAuthorizeRepository authorizeRepository = _repositoryFactory.Get(typeof(IAuthorizeRepository), _unitOfWork) as IAuthorizeRepository;
+            IAuthorizeRepository authorizeRepository = RepositoryFactory.Get(typeof(IAuthorizeRepository), _unitOfWork) as IAuthorizeRepository;
             List<Authorize> list = authorizeRepository.GetAll().ToList();
             Assert.IsTrue(list != null && list.Count > 0);
 
             _unitOfWork.Commit();
-            _repositoryFactory.End();
         }
 
         [TestMethod]
         public void Update()
         {
-            _repositoryFactory = new RepositoryFactory();
-            _repositoryFactory.Begin();
-            _unitOfWork = _repositoryFactory.UnitOfWork;
+            _unitOfWork = RepositoryFactory.GetUnitOfWork();
 
-            IAuthorizeRepository authorizeRepository = _repositoryFactory.Get(typeof(IAuthorizeRepository), _unitOfWork) as IAuthorizeRepository;
+            IAuthorizeRepository authorizeRepository = RepositoryFactory.Get(typeof(IAuthorizeRepository), _unitOfWork) as IAuthorizeRepository;
             authorizeRepository.Save(new Authorize() { AuthorityName = "Login", RoleName = "SuperManager" });
 
             _unitOfWork.Commit();
-            _repositoryFactory.End();
         }
 
         [TestMethod]
         public void Del()
         {
-            _repositoryFactory = new RepositoryFactory();
-            _repositoryFactory.Begin();
-            _unitOfWork = _repositoryFactory.UnitOfWork;
+            _unitOfWork = RepositoryFactory.GetUnitOfWork();
 
-            IAuthorizeRepository authorizeRepository = _repositoryFactory.Get(typeof(IAuthorizeRepository), _unitOfWork) as IAuthorizeRepository;
+            IAuthorizeRepository authorizeRepository = RepositoryFactory.Get(typeof(IAuthorizeRepository), _unitOfWork) as IAuthorizeRepository;
             authorizeRepository.Del(new Authorize() { AuthorityName = "Login", RoleName = "SuperManager" });
 
             _unitOfWork.Commit();
-            _repositoryFactory.End();
         }
     }
 }
