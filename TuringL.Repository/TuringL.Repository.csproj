@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ContextFactory.cs" />
+    <Compile Include="Impl\MaintanceRecord.cs" />
     <Compile Include="Impl\ProductAddtionalInfo.cs" />
     <Compile Include="Impl\ProductInfo.cs" />
     <Compile Include="Impl\SysRecordRepository.cs" />

@@ -5447,7 +5447,7 @@
             isAbstract="false">
             <classMoniker
               Id="fc00058f-e4c3-4e9f-a95b-a3a75bc21c44"
-              LastKnownName="维护单"
+              LastKnownName="维护记录"
               LastKnownLocation="TuringL.UML.uml" />
             <relationshipOwnedElementsInternal>
               <associationHasOwnedEnds>
@@ -5594,6 +5594,45 @@
               </associationHasOwnedEnds>
             </relationshipOwnedElementsInternal>
           </association>
+          <association
+            Id="b9ce7b75-95f0-4b37-8b78-d3b5d104592c"
+            isDerived="false"
+            sourceEndRoleName="产品"
+            targetEndRoleName="安装信息"
+            isLeaf="false"
+            isAbstract="false">
+            <classMoniker
+              Id="819600b0-f168-430b-8a3a-8e7f511ca599"
+              LastKnownName="安装信息"
+              LastKnownLocation="TuringL.UML.uml" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="eea32835-d9b0-4fa1-b6a7-dd04c4bae428"
+                  name="产品"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="Shared"
+                  isComposite="false"
+                  isNavigableOwned="false" />
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="2bf9bc5b-edf9-463a-bb91-be6ea502112e"
+                  name="安装信息"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false" />
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+          </association>
         </targetEnds>
         <ownedAttributesInternal>
           <property
@@ -5646,90 +5685,78 @@
     <packageHasNamedElement>
       <class
         Id="fc00058f-e4c3-4e9f-a95b-a3a75bc21c44"
-        name="维护单"
+        name="维护记录"
         isAbstract="false"
         isLeaf="false"
         isActiveClass="false">
-        <targetEnds>
-          <association
-            Id="dc59774a-ef48-4b1d-b570-e86b06c080d0"
-            isDerived="false"
-            sourceEndRoleName="维护单"
-            targetEndRoleName="安装信息"
+        <ownedAttributesInternal>
+          <property
+            Id="74b80b50-87a6-4f9c-ae48-ad798f7e93f1"
+            name="问题描述"
             isLeaf="false"
-            isAbstract="false">
-            <classMoniker
-              Id="819600b0-f168-430b-8a3a-8e7f511ca599"
-              LastKnownName="安装信息"
-              LastKnownLocation="TuringL.UML.uml" />
-            <relationshipOwnedElementsInternal>
-              <associationHasOwnedEnds>
-                <memberEnd
-                  Id="d14a9d5c-890d-4458-9ecf-246c7f402389"
-                  name="维护单"
-                  isLeaf="false"
-                  isStatic="false"
-                  isReadOnly="false"
-                  isDerived="false"
-                  isDerivedUnion="false"
-                  aggregation="Shared"
-                  isComposite="false"
-                  isNavigableOwned="false" />
-              </associationHasOwnedEnds>
-              <associationHasOwnedEnds>
-                <memberEnd
-                  Id="7de8d1cb-3194-4cba-b2f7-4f19e03350e3"
-                  name="安装信息"
-                  isLeaf="false"
-                  isStatic="false"
-                  isReadOnly="false"
-                  isDerived="false"
-                  isDerivedUnion="false"
-                  aggregation="None"
-                  isComposite="false" />
-              </associationHasOwnedEnds>
-            </relationshipOwnedElementsInternal>
-          </association>
-          <association
-            Id="df2a80e6-d810-4656-9a0a-726659129e05"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
             isDerived="false"
-            sourceEndRoleName="维护单"
-            targetEndRoleName="维护记录"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="e0f53684-52e3-4e20-90ff-9a31cca91c9f"
+            name="维护人员"
             isLeaf="false"
-            isAbstract="false">
-            <classMoniker
-              Id="8fec0ee8-3ca6-45c4-bf2c-241dd16fb32c"
-              LastKnownName="维护记录"
-              LastKnownLocation="TuringL.UML.uml" />
-            <relationshipOwnedElementsInternal>
-              <associationHasOwnedEnds>
-                <memberEnd
-                  Id="a74ab835-d37e-4fbd-8a8d-7e6f60fbb406"
-                  name="维护单"
-                  isLeaf="false"
-                  isStatic="false"
-                  isReadOnly="false"
-                  isDerived="false"
-                  isDerivedUnion="false"
-                  aggregation="Shared"
-                  isComposite="false"
-                  isNavigableOwned="false" />
-              </associationHasOwnedEnds>
-              <associationHasOwnedEnds>
-                <memberEnd
-                  Id="20bec1cf-15bf-4b79-bd4d-7748ec0bb565"
-                  name="维护记录"
-                  isLeaf="false"
-                  isStatic="false"
-                  isReadOnly="false"
-                  isDerived="false"
-                  isDerivedUnion="false"
-                  aggregation="None"
-                  isComposite="false" />
-              </associationHasOwnedEnds>
-            </relationshipOwnedElementsInternal>
-          </association>
-        </targetEnds>
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="e44b85c5-6afd-4971-bb84-8a4c514fdf4c"
+            name="维护时间"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="7a542d5b-36d4-4358-a8ed-681ee4940ae0"
+            name="故障类型"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="a1cfcd6d-414f-4d0a-8015-ad872dc51441"
+            name="解决方案"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="9df7ec1b-f45f-4be3-a46f-c07b680d1215"
+            name="维护状态"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+        </ownedAttributesInternal>
       </class>
     </packageHasNamedElement>
     <packageHasNamedElement>
@@ -5996,7 +6023,120 @@
         name="安装信息"
         isAbstract="false"
         isLeaf="false"
-        isActiveClass="false" />
+        isActiveClass="false">
+        <ownedAttributesInternal>
+          <property
+            Id="699f4a00-ec3a-491c-8cde-fb9cfbc95183"
+            name="业主负责人"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="ef993176-b5e9-4c69-bf2c-7bcd44fc9d3c"
+            name="安装时间"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="3209039a-8ef8-4aec-8a38-e464ddb2d738"
+            name="安装地点"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="7ba6618f-cbbf-49ab-86f1-86c75e8a7d61"
+            name="安装完成时间"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="39e8989d-fe27-4a17-befc-30bbbcd061e0"
+            name="安装方式"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="384bb910-d7e9-485d-8cf4-4e55b286a495"
+            name="安装状态"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="0128a0ac-2573-44f7-a54f-dfc99a7307d4"
+            name="验收时间"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="276efacb-d78e-44a6-a7c6-3908d3ee4637"
+            name="联系电话"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="e1c5bccc-3dfa-4955-beee-ea31d998c506"
+            name="保修期"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="2f3d4d2b-f293-42d9-a180-bda4d9c27d7f"
+            name="安装图片"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+        </ownedAttributesInternal>
+      </class>
     </packageHasNamedElement>
     <packageHasNamedElement>
       <class

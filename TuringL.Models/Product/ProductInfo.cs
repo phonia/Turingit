@@ -22,12 +22,16 @@ namespace TuringL.Models
         public void Register()
         {
             this.RState = (int)RStates.Added;
-            Validate();
-            foreach (var item in ProductAddtionalInfoes)
+            //Validate();
+            IsValidated();
+            if (ProductAddtionalInfoes != null)
             {
-                item.ProductId = this.Id;
-                item.IsValidated();
-                item.Register();
+                foreach (var item in ProductAddtionalInfoes)
+                {
+                    item.ProductId = this.Id;
+                    item.IsValidated();
+                    item.Register();
+                }
             }
         }
     }

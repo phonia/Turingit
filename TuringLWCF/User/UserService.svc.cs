@@ -70,9 +70,9 @@ namespace TuringLWCF
             }
         }
 
-        public string UpdateUser(string loginUser,string updateUser)
+        public string UpdateUser(string updateUser)
         {
-            if (loginUser == null || loginUser == String.Empty || updateUser == null || updateUser == String.Empty)
+            if (updateUser == null || updateUser == String.Empty)
             {
                 return JsonHelper.SerializeObject("false:no enough parms!");
             }

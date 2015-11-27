@@ -16,6 +16,8 @@ namespace TuringL.Models
 
         public void Register()
         {
+            IsValidated();
+            this.Id = System.Guid.NewGuid();
             this.RState = (int)RStates.Added;
         }
     }

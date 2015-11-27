@@ -20,32 +20,43 @@ namespace TuringL.DServices
         public GetAuthoritiesListResponse GetAuthoritiesList(GetAuthoritiesListRequest request)
         {
             GetAuthoritiesListResponse response = new GetAuthoritiesListResponse();
-            using (IUnitOfWork unitOfWork = RepositoryFactory.GetUnitOfWork())
+            try
             {
-                try
+                using (IUnitOfWork unitOfWork = RepositoryFactory.GetUnitOfWork())
                 {
-                    if (request == null) throw new Exception("null Input!");
-
-                    IAuthorityRepository authorityRepository = RepositoryFactory.Get(typeof(IAuthorityRepository), unitOfWork) as IAuthorityRepository;
-                    List<Authority> authorities = authorityRepository.GetAll().ToList();
-                    if (authorities == null) throw new Exception("no Authority in GetAuthoritiesList of UserService!");
-
-                    unitOfWork.Commit();
-
-                    foreach (var item in authorities)
+                    if (request != null)
                     {
-                        ViewModels.AuthorityView node = new ViewModels.AuthorityView() { Id = item.Id, Name = item.Name };
-                        if (response.Authorities == null) response.Authorities = new List<ViewModels.AuthorityView>();
-                        response.Authorities.Add(node);
+                        IAuthorityRepository authorityRepository = RepositoryFactory.Get(typeof(IAuthorityRepository), unitOfWork) as IAuthorityRepository;
+                        List<Authority> authorities = authorityRepository.GetAll().ToList();
+                        unitOfWork.Commit();
+                        if (authorities != null)
+                        {
+                            foreach (var item in authorities)
+                            {
+                                ViewModels.AuthorityView node = new ViewModels.AuthorityView() { Id = item.Id, Name = item.Name };
+                                if (response.Authorities == null) response.Authorities = new List<ViewModels.AuthorityView>();
+                                response.Authorities.Add(node);
+                            }
+                            response.IsSucess = true;
+                        }
+                        else
+                        {
+                            response.IsSucess = false;
+                            response.Message = "No Authority!";
+                        }
                     }
-                    response.IsSucess = true;
+                    else
+                    {
+                        response.IsSucess = false;
+                        response.Message = "No Input!";
+                    }
                 }
-                catch (Exception ex)
-                {
-                    Log.Write(ex.Message);
-                    response.IsSucess = false;
-                    response.Message = ex.Message;
-                }
+            }
+            catch (Exception ex)
+            {
+                Log.Write(ex.Message);
+                response.IsSucess = false;
+                response.Message = ex.Message;
             }
             return response;
         }
@@ -53,53 +64,64 @@ namespace TuringL.DServices
         public GetRolesListResponse GetRolesList(GetRolesListRequest request)
         {
             GetRolesListResponse response = new GetRolesListResponse();
-            using (IUnitOfWork unitOfWork = RepositoryFactory.GetUnitOfWork())
+            try
             {
-                try
+                using (IUnitOfWork unitOfWork = RepositoryFactory.GetUnitOfWork())
                 {
-                    if (request == null) throw new Exception("null Input!");
-
-                    IRoleRepository roleRepository = RepositoryFactory.Get(typeof(IRoleRepository), unitOfWork) as IRoleRepository;
-                    IAuthorizeRepository authorizeRepository = RepositoryFactory.Get(typeof(IAuthorizeRepository), unitOfWork) as IAuthorizeRepository;
-                    IAuthorityRepository authorityRepositroy = RepositoryFactory.Get(typeof(IAuthorityRepository), unitOfWork) as IAuthorityRepository;
-                    List<Authorize> authorizes = authorizeRepository.GetAll().ToList();
-                    List<Authority> authorities = authorityRepositroy.GetAll().ToList();
-                    List<Role> roles = roleRepository.GetAll().ToList();
-                    if (authorities == null || authorizes == null || roles == null) 
-                        throw new Exception("no Authority.Authorize.Role in GetRoleList of UserService!");
-
-                    unitOfWork.Commit();
-
-                    response.Roles = new List<ViewModels.RoleView>();
-                    foreach (var item in roles)
+                    if (request != null)
                     {
-                        ViewModels.RoleView node = new ViewModels.RoleView();
-                        node.Id = item.Id;
-                        node.Name = item.Name;
-                        List<Authorize> selectedAuthorizes = authorizes.Where(it => it.RoleName.Contains(item.Id)).ToList();
-                        if (selectedAuthorizes != null)
-                        {
-                            foreach (var seletecd in selectedAuthorizes)
-                            {
-                                var selectedAuthority = authorities.Where(it => it.Id == seletecd.AuthorityName).FirstOrDefault();
-                                if (selectedAuthority != null)
-                                {
-                                    if (node.Authorities == null) node.Authorities = new List<ViewModels.AuthorityView>();
-                                    node.Authorities.Add(new ViewModels.AuthorityView() { Id = selectedAuthority.Id, Name = selectedAuthority.Name });
-                                }
-                            }
-                        }
+                        IRoleRepository roleRepository = RepositoryFactory.Get(typeof(IRoleRepository), unitOfWork) as IRoleRepository;
+                        IAuthorizeRepository authorizeRepository = RepositoryFactory.Get(typeof(IAuthorizeRepository), unitOfWork) as IAuthorizeRepository;
+                        IAuthorityRepository authorityRepositroy = RepositoryFactory.Get(typeof(IAuthorityRepository), unitOfWork) as IAuthorityRepository;
+                        List<Authorize> authorizes = authorizeRepository.GetAll().ToList();
+                        List<Authority> authorities = authorityRepositroy.GetAll().ToList();
+                        List<Role> roles = roleRepository.GetAll().ToList();
+                        unitOfWork.Commit();
 
-                        response.Roles.Add(node);
+                        if (authorities != null && authorizes != null && roles != null)
+                        {
+                            response.Roles = new List<ViewModels.RoleView>();
+                            foreach (var item in roles)
+                            {
+                                ViewModels.RoleView node = new ViewModels.RoleView();
+                                node.Id = item.Id;
+                                node.Name = item.Name;
+                                List<Authorize> selectedAuthorizes = authorizes.Where(it => it.RoleName.Contains(item.Id)).ToList();
+                                if (selectedAuthorizes != null)
+                                {
+                                    foreach (var seletecd in selectedAuthorizes)
+                                    {
+                                        var selectedAuthority = authorities.Where(it => it.Id == seletecd.AuthorityName).FirstOrDefault();
+                                        if (selectedAuthority != null)
+                                        {
+                                            if (node.Authorities == null) node.Authorities = new List<ViewModels.AuthorityView>();
+                                            node.Authorities.Add(new ViewModels.AuthorityView() { Id = selectedAuthority.Id, Name = selectedAuthority.Name });
+                                        }
+                                    }
+                                }
+
+                                response.Roles.Add(node);
+                            }
+                            response.IsSucess = true;
+                        }
+                        else
+                        {
+                            response.IsSucess = false;
+                            response.Message = "no Authority.Authorize.Role in GetRoleList of UserService!";
+                        }
                     }
-                    response.IsSucess = true;
+                    else
+                    {
+                        response.IsSucess = false;
+                        response.Message = "No Input!";
+                    }
                 }
-                catch (Exception ex)
-                {
-                    Log.Write(ex.Message);
-                    response.IsSucess = false;
-                    response.Message = ex.Message;
-                }
+            }
+            catch (Exception ex)
+            {
+                Log.Write(ex.Message);
+                response.IsSucess = false;
+                response.Message = ex.Message;
             }
             return response;
         }
@@ -107,40 +129,51 @@ namespace TuringL.DServices
         public RegisterUserResponse RegisterUser(RegisterUserRequest request)
         {
             RegisterUserResponse response = new RegisterUserResponse();
-            using (IUnitOfWork unitOfWork = RepositoryFactory.GetUnitOfWork())
+            try
             {
-                try
+                using (IUnitOfWork unitOfWork = RepositoryFactory.GetUnitOfWork())
                 {
-                    if (request == null) throw new Exception("null Input!");
-
-                    IUserRepository userRepository = RepositoryFactory.Get(typeof(IUserRepository), unitOfWork) as IUserRepository;
-                    IRoleRepository roleRepository = RepositoryFactory.Get(typeof(IRoleRepository), unitOfWork) as IRoleRepository;
-                    User user = new User() { Id = System.Guid.NewGuid(), Name = request.Name, Password = request.Password, Duty = request.Duty, Email = request.Email, RoleId = request.RoleId };
-                    user.IsValidated();
-                    userRepository.Add(user);
-                    Role role = roleRepository.GetByKey(request.RoleId);
-                    if (role == null) throw new Exception("no role in RegisterUser of UserService!");
-
-                    unitOfWork.Commit();
-
-                    response.IsSucess = true;
-                    response.User = new ViewModels.UserView()
+                    if (request != null)
                     {
-                        Id = user.Id.ToString(),
-                        Name = user.Name,
-                        Password = user.Password,
-                        Duty = user.Duty,
-                        Email = user.Email,
-                        RoleId = user.RoleId,
-                        RoleName = role.Name
-                    };
+                        IUserRepository userRepository = RepositoryFactory.Get(typeof(IUserRepository), unitOfWork) as IUserRepository;
+                        IRoleRepository roleRepository = RepositoryFactory.Get(typeof(IRoleRepository), unitOfWork) as IRoleRepository;
+                        User user = new User() { Id = System.Guid.NewGuid(), Name = request.Name, Password = request.Password, Duty = request.Duty, Email = request.Email, RoleId = request.RoleId };
+                        user.IsValidated();
+                        userRepository.Add(user);
+                        Role role = roleRepository.GetByKey(request.RoleId);
+                        unitOfWork.Commit();
+                        if (role != null)
+                        {
+                            response.IsSucess = true;
+                            response.User = new ViewModels.UserView()
+                            {
+                                Id = user.Id.ToString(),
+                                Name = user.Name,
+                                Password = user.Password,
+                                Duty = user.Duty,
+                                Email = user.Email,
+                                RoleId = user.RoleId,
+                                RoleName = role.Name
+                            };
+                        }
+                        else
+                        {
+                            response.IsSucess = false;
+                            response.Message = "No role in RegisterUser of UserService!";
+                        }   
+                    }
+                    else 
+                    {
+                        response.IsSucess = false;
+                        response.Message = "No Input!";
+                    }
                 }
-                catch (Exception ex)
-                {
-                    Log.Write(ex.Message);
-                    response.IsSucess = false;
-                    response.Message = ex.Message;
-                }
+            }
+            catch (Exception ex)
+            {
+                Log.Write(ex.Message);
+                response.IsSucess = false;
+                response.Message = ex.Message;
             }
             return response;
         }
@@ -148,43 +181,63 @@ namespace TuringL.DServices
         public LoginUserResponse Login(LoginUserRequset request)
         {
             LoginUserResponse response = new LoginUserResponse();
-            using (IUnitOfWork unitOfWork = RepositoryFactory.GetUnitOfWork())
+            try
             {
-                try
+                using (IUnitOfWork unitOfWork = RepositoryFactory.GetUnitOfWork())
                 {
-                    if (request == null) throw new Exception("null Input!");
-
-                    IUserRepository userRepository = RepositoryFactory.Get(typeof(IUserRepository), unitOfWork) as IUserRepository;
-                    IRoleRepository roleRepository = RepositoryFactory.Get(typeof(IRoleRepository), unitOfWork) as IRoleRepository;
-                    List<User> list = userRepository.GetAll().ToList();
-                    if (list == null) throw new Exception("no User in Login of Userservic!");
-                    User user = list.Where(it => it.Name == request.Name && it.Password == request.Password).FirstOrDefault();
-                    if (user == null) throw new Exception("no suitable user where name:" + request.Name + " password:" + request.Password);
-                    Role role = roleRepository.GetByKey(user.RoleId);
-                    if (role == null) throw new Exception("no role in Login of UserService!");
-
-                    unitOfWork.Commit();
-
-                    ViewModels.UserView userView = new ViewModels.UserView()
+                    if (request != null)
                     {
-                        Id = user.Id.ToString(),
-                        Name = user.Name,
-                        Password = user.Password,
-                        Email = user.Email,
-                        Duty = user.Duty,
-                        RoleId = user.RoleId,
-                        RoleName = role.Name
-                    };
-                    response.IsSucess = true;
-                    response.User = userView;
+                        IUserRepository userRepository = RepositoryFactory.Get(typeof(IUserRepository), unitOfWork) as IUserRepository;
+                        IRoleRepository roleRepository = RepositoryFactory.Get(typeof(IRoleRepository), unitOfWork) as IRoleRepository;
+                        List<User> list = userRepository.GetAll().ToList();
+                        if (list != null)
+                        {
+                            User user = list.Where(it => it.Name == request.Name && it.Password == request.Password).FirstOrDefault();
+                            if (user != null)
+                            {
+                                Role role = roleRepository.GetByKey(user.RoleId);
+                                if (role != null)
+                                {
+                                    unitOfWork.Commit();
 
+                                    ViewModels.UserView userView = new ViewModels.UserView()
+                                    {
+                                        Id = user.Id.ToString(),
+                                        Name = user.Name,
+                                        Password = user.Password,
+                                        Email = user.Email,
+                                        Duty = user.Duty,
+                                        RoleId = user.RoleId,
+                                        RoleName = role.Name
+                                    };
+                                    response.IsSucess = true;
+                                    response.User = userView;
+                                }
+                            }
+                            else
+                            {
+                                response.IsSucess = false;
+                                response.Message = "Not Suitable User!";
+                            }
+                        }
+                        else
+                        {
+                            response.IsSucess = false;
+                            response.Message = "Not Any User";
+                        }
+                    }
+                    else
+                    {
+                        response.IsSucess = false;
+                        response.Message = "No Input!";
+                    }
                 }
-                catch (Exception ex)
-                {
-                    Log.Write(ex.Message);
-                    response.IsSucess = false;
-                    response.Message = ex.Message;
-                }
+            }
+            catch (Exception ex)
+            {
+                Log.Write(ex.Message);
+                response.IsSucess = false;
+                response.Message = ex.Message;
             }
             return response;
         }
@@ -192,38 +245,49 @@ namespace TuringL.DServices
         public GetUserByIdResponse GetUserById(GetUserByIdRequest request)
         {
             GetUserByIdResponse response = new GetUserByIdResponse();
-            using (IUnitOfWork unitOfWork = RepositoryFactory.GetUnitOfWork())
+            try
             {
-                try
+                using (IUnitOfWork unitOfWork = RepositoryFactory.GetUnitOfWork())
                 {
-                    if (request == null) throw new Exception("null Input!");
-
-                    IUserRepository userRepository = RepositoryFactory.Get(typeof(IUserRepository), unitOfWork) as IUserRepository;
-                    IRoleRepository roleRepository = RepositoryFactory.Get(typeof(IRoleRepository), unitOfWork) as IRoleRepository;
-                    User user = userRepository.GetByKey(System.Guid.Parse(request.Id));
-                    if (user == null) throw new Exception("no user in GetUserById of UserService!");
-                    Role role = roleRepository.GetByKey(user.RoleId);
-                    if (role == null) throw new Exception("no role in GetUserById of UserService!");
-
-                    unitOfWork.Commit();
-
-                    response.IsSucess = true;
-                    response.User = new ViewModels.UserView()
+                    if (request != null)
                     {
-                        Id = user.Id.ToString(),
-                        Name = user.Name,
-                        Duty = user.Duty,
-                        Email = user.Email,
-                        RoleId = user.RoleId,
-                        RoleName = role.Name
-                    };
+                        IUserRepository userRepository = RepositoryFactory.Get(typeof(IUserRepository), unitOfWork) as IUserRepository;
+                        IRoleRepository roleRepository = RepositoryFactory.Get(typeof(IRoleRepository), unitOfWork) as IRoleRepository;
+                        User user = userRepository.GetByKey(System.Guid.Parse(request.Id));
+                        if (user != null)
+                        {
+                            Role role = roleRepository.GetByKey(user.RoleId);
+                            unitOfWork.Commit();
+                            if (role != null)
+                            {
+                                response.IsSucess = true;
+                                response.User = new ViewModels.UserView()
+                                {
+                                    Id = user.Id.ToString(),
+                                    Name = user.Name,
+                                    Duty = user.Duty,
+                                    Email = user.Email,
+                                    RoleId = user.RoleId,
+                                    RoleName = role.Name
+                                };
+                            }
+                        }
+
+                        response.IsSucess = false;
+                        response.Message = "No User!";
+                    }
+                    else
+                    {
+                        response.IsSucess = false;
+                        response.Message = "No Input!";
+                    }
                 }
-                catch (Exception ex)
-                {
-                    Log.Write(ex.Message);
-                    response.IsSucess = false;
-                    response.Message = ex.Message;
-                }
+            }
+            catch (Exception ex)
+            {
+                Log.Write(ex.Message);
+                response.IsSucess = false;
+                response.Message = ex.Message;
             }
             return response;
         }
@@ -231,9 +295,9 @@ namespace TuringL.DServices
         public GetUsersListResponse GetUserList(GetUsersListRequest request)
         {
             GetUsersListResponse response = new GetUsersListResponse();
-            using (IUnitOfWork unitOfWork = RepositoryFactory.GetUnitOfWork())
+            try
             {
-                try
+                using (IUnitOfWork unitOfWork = RepositoryFactory.GetUnitOfWork())
                 {
                     if (request == null) throw new Exception("null Input!");
 
@@ -280,23 +344,22 @@ namespace TuringL.DServices
                     }
                     response.IsSucess = true;
                 }
-                catch (Exception ex)
-                {
-                    Log.Write(ex.Message);
-                    response.IsSucess = false;
-                    response.Message = ex.Message;
-                }
             }
-
+            catch (Exception ex)
+            {
+                Log.Write(ex.Message);
+                response.IsSucess = false;
+                response.Message = ex.Message;
+            }
             return response;
         }
 
         public UpdateUserResponse UpdateUser(UpdateUserRequest request)
         {
             UpdateUserResponse response = new UpdateUserResponse();
-            using (IUnitOfWork unitOfWork = RepositoryFactory.GetUnitOfWork())
+            try
             {
-                try
+                using (IUnitOfWork unitOfWork = RepositoryFactory.GetUnitOfWork())
                 {
                     if (request == null) throw new Exception("null Input!");
 
@@ -326,12 +389,12 @@ namespace TuringL.DServices
                         RoleName = role.Name
                     };
                 }
-                catch (Exception ex)
-                {
-                    Log.Write(ex.Message);
-                    response.IsSucess = false;
-                    response.Message = ex.Message;
-                }
+            }
+            catch (Exception ex)
+            {
+                Log.Write(ex.Message);
+                response.IsSucess = false;
+                response.Message = ex.Message;
             }
             return response;
         }
@@ -339,9 +402,9 @@ namespace TuringL.DServices
         public DelUserResponse DelUser(DelUserRequest request)
         {
             DelUserResponse response = new DelUserResponse();
-            using (IUnitOfWork unitOfWork = RepositoryFactory.GetUnitOfWork())
+            try
             {
-                try
+                using (IUnitOfWork unitOfWork = RepositoryFactory.GetUnitOfWork())
                 {
                     if (request == null) throw new Exception("null input!");
 
@@ -352,12 +415,12 @@ namespace TuringL.DServices
 
                     response.IsSucess = true;
                 }
-                catch (Exception ex)
-                {
-                    Log.Write(ex.Message);
-                    response.IsSucess = false;
-                    response.Message = ex.Message;
-                }
+            }
+            catch (Exception ex)
+            {
+                Log.Write(ex.Message);
+                response.IsSucess = false;
+                response.Message = ex.Message;
             }
             return response;
         }

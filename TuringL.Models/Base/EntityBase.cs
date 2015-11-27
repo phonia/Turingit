@@ -35,7 +35,7 @@ namespace TuringL.Models
                 {
                     sb.Append(item.Property + ":" + item.Rule+" ");
                 }
-                throw new Exception(sb.ToString());
+                if (sb.Length > 0) throw new Exception(sb.ToString());
             }
         }
 

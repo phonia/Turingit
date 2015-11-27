@@ -84,16 +84,17 @@ namespace DServicesTest
                     Path = "~~~",
                     Rtype = 1,
                 });
-                par.productAddtionalInofView = list;
+                par.productAddtionalInfoView = list;
                 RegisterProductRequest requset = new RegisterProductRequest()
                 {
                     ProductInfo = new ProductInfoView()
                     {
                         Id = "614141999996",
                         Name = "测试项",
-                        TypeVersion = "测试项"
-                    },
-                    RegisterProductAddtionalInfoRequest = par
+                        TypeVersion = "测试项",
+                        ProductAddtionalInfos=list
+                    }
+                    //RegisterProductAddtionalInfoRequest = par
                 };
 
                 RegisterProductResponse response = _service.RegisterProduct(requset);
@@ -102,6 +103,17 @@ namespace DServicesTest
             {
                 Assert.IsTrue(false);
             }
+        }
+
+        [TestMethod]
+        public void GetProductInfoList()
+        {
+            try
+            {
+                List<ProductInfoView> list = _service.GetProductInfos(new GetProductInfoListRequest()).ProductInfos;
+            }
+            catch (Exception ex)
+            { }
         }
     }
 }

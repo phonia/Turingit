@@ -5,13 +5,17 @@ using System.Text;
 
 namespace TuringL.Models
 {
-    /// <summary>
-    /// records state in database ==RState
-    /// </summary>
     public enum RStates
     {
         Added=1,
         Updated=2,
         Deleted=3
+    }
+
+    public enum MaintanceStates
+    {
+        INCOMPLETE=1,
+        DONE=2,
+        MODEFIED=3
     }
 }

@@ -15,7 +15,8 @@ namespace TuringL.Repository
                                                                 {typeof(IAuthorityRepository),typeof(AuthorityUnitOfWorkRepository)},
                                                                 {typeof(IAuthorizeRepository),typeof(AuthorizeUnitOfWorkRepository)},
                                                                 {typeof(IUserRepository),typeof(UserUnitOfWorkRepository)},
-                                                                {typeof(IProductInfoRepository),typeof(ProductInfoUnitOfWorkRepository)}
+                                                                {typeof(IProductInfoRepository),typeof(ProductInfoUnitOfWorkRepository)},
+                                                                {typeof(IMaintanceRecordRepository),typeof(MaintanceRecordUnitOfWorkRepository)}
                                                                 };
 
         public static IUnitOfWorkRepository Get(Type type,IUnitOfWork unitOfWork)

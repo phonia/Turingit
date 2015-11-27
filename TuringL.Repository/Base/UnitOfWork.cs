@@ -97,6 +97,7 @@ namespace TuringL.Repository
         public void Dispose()
         {
             ContextFactory.Remove(Thread.CurrentThread.ManagedThreadId + Thread.CurrentThread.Name);
+            //GC.SuppressFinalize(false);
         }
     }
 

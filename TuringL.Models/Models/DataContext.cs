@@ -12,6 +12,7 @@ namespace TuringL.Models
         {
         }
 
+        public virtual DbSet<MaintanceRecord> MaintanceRecords { get; set; }
         public virtual DbSet<ProductAddtionalInfo> ProductAddtionalInfoes { get; set; }
         public virtual DbSet<ProductInfo> ProductInfoes { get; set; }
         public virtual DbSet<SysRecord> SysRecords { get; set; }
@@ -19,6 +20,26 @@ namespace TuringL.Models
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<MaintanceRecord>()
+                .Property(e => e.KeyWorld)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<MaintanceRecord>()
+                .Property(e => e.Description)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<MaintanceRecord>()
+                .Property(e => e.Solution)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<MaintanceRecord>()
+                .Property(e => e.MiantanceUser)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<MaintanceRecord>()
+                .Property(e => e.ProductId)
+                .IsUnicode(false);
+
             modelBuilder.Entity<ProductAddtionalInfo>()
                 .Property(e => e.Name)
                 .IsUnicode(false);
@@ -46,6 +67,12 @@ namespace TuringL.Models
             modelBuilder.Entity<ProductInfo>()
                 .Property(e => e.Note)
                 .IsUnicode(false);
+
+            modelBuilder.Entity<ProductInfo>()
+                .HasMany(e => e.MaintanceRecords)
+                .WithRequired(e => e.ProductInfo)
+                .HasForeignKey(e => e.ProductId)
+                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<ProductInfo>()
                 .HasMany(e => e.ProductAddtionalInfoes)
