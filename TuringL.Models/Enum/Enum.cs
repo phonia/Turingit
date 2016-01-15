@@ -18,4 +18,9 @@ namespace TuringL.Models
         DONE=2,
         MODEFIED=3
     }
+    public enum InstallStates
+    {
+        INSTALLING=1,
+        INSTALLED=2
+    }
 }

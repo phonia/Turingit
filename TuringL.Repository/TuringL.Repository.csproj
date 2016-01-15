@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ContextFactory.cs" />
+    <Compile Include="Impl\InstallRepository.cs" />
     <Compile Include="Impl\MaintanceRecord.cs" />
     <Compile Include="Impl\ProductAddtionalInfo.cs" />
     <Compile Include="Impl\ProductInfo.cs" />
@@ -56,7 +57,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Base\UnitOfWork.cs" />
     <Compile Include="Base\Repository.cs" />
-    <Compile Include="RepositoryFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

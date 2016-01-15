@@ -4,4 +4,12 @@
     <Id>UserManager</Id>
     <Name>用户管理</Name>
   </Authority>
+  <Authority>
+    <Id>ProductManager</Id>
+    <Name>产品管理</Name>
+  </Authority>
+  <Authority>
+    <Id>MaintanceRecordManager</Id>
+    <Name>维护管理</Name>
+  </Authority>
 </ArrayOfAuthority>

@@ -19,11 +19,13 @@ namespace TuringL.ViewModels
 
         public string MiantanceUser { get; set; }
 
-        public DateTime MaintanceStartTime { get; set; }
+        public string MaintanceStartTime { get; set; }
 
-        public DateTime MiantanceOverTime { get; set; }
+        public string MiantanceOverTime { get; set; }
 
         public int MState { get; set; }
+
+        public string FirstPartier { get; set; }
 
         //public int RState { get; set; }
     }

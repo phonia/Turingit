@@ -32,9 +32,11 @@ namespace TuringL.Models
 
         public int RState { get; set; }
 
-        [Required]
         [StringLength(50)]
         public string ProductId { get; set; }
+
+        [StringLength(50)]
+        public string FirstPartier { get; set; }
 
         public virtual ProductInfo ProductInfo { get; set; }
     }

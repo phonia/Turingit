@@ -5517,45 +5517,6 @@
             </relationshipOwnedElementsInternal>
           </association>
           <association
-            Id="67d9d1d5-80d2-407e-b909-907f0eb4f5d1"
-            isDerived="false"
-            sourceEndRoleName="产品"
-            targetEndRoleName="维修单"
-            isLeaf="false"
-            isAbstract="false">
-            <classMoniker
-              Id="9bb68127-9fc2-416c-a0a8-51e6dbeeabac"
-              LastKnownName="维修单"
-              LastKnownLocation="TuringL.UML.uml" />
-            <relationshipOwnedElementsInternal>
-              <associationHasOwnedEnds>
-                <memberEnd
-                  Id="d08ac100-1db2-432c-9a02-201f665f8551"
-                  name="产品"
-                  isLeaf="false"
-                  isStatic="false"
-                  isReadOnly="false"
-                  isDerived="false"
-                  isDerivedUnion="false"
-                  aggregation="Shared"
-                  isComposite="false"
-                  isNavigableOwned="false" />
-              </associationHasOwnedEnds>
-              <associationHasOwnedEnds>
-                <memberEnd
-                  Id="d5f39004-56df-4f6c-873e-5457ddf313c6"
-                  name="维修单"
-                  isLeaf="false"
-                  isStatic="false"
-                  isReadOnly="false"
-                  isDerived="false"
-                  isDerivedUnion="false"
-                  aggregation="None"
-                  isComposite="false" />
-              </associationHasOwnedEnds>
-            </relationshipOwnedElementsInternal>
-          </association>
-          <association
             Id="bc1f2aa2-f077-4614-9a84-38e37d46acdf"
             isDerived="false"
             sourceEndRoleName="产品"
@@ -6178,7 +6139,7 @@
             isComposite="false" />
           <property
             Id="13b21e3b-cc28-4272-bb5f-b7320f240d96"
-            name="存储路径"
+            name="信息类型"
             isLeaf="false"
             isStatic="false"
             isReadOnly="false"

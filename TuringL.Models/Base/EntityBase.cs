@@ -46,8 +46,15 @@ namespace TuringL.Models
             _brokenRules.Add(businessRules);
         }
 
+        /// <summary>
+        /// check this is equal the obj
+        /// and just check the property which is value type
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         public override bool Equals(object obj)
         {
+            
             if (this.GetType() != obj.GetType())
                 return false;
 
@@ -61,6 +68,10 @@ namespace TuringL.Models
             {
                 foreach (PropertyInfo item in properties)
                 {
+                    if (item.PropertyType.IsGenericType||item.PropertyType.IsClass)
+                    {
+                        continue;
+                    }
                     PropertyInfo node = objProperties.Where(it => it.Name.Equals(item.Name)).FirstOrDefault();
                     if (node != null)
                     {

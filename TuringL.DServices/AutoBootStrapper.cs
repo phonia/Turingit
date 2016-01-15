@@ -1,13 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections;
 using System.Linq;
 using System.Text;
 using TuringL.Models;
+using TuringL.Repository;
 
-namespace TuringL.Repository
+namespace TuringL.DServices
 {
-    public class RepositoryFactory 
+    public class AutoBootStrapper
+    {
+        public static void Start()
+        {
+            AutoMapperBootStrapper.ConfigurationMapper();
+        }
+    }
+
+
+    internal class RepositoryFactory
     {
 
         private static readonly Dictionary<Type, Type> _dict = new Dictionary<Type, Type>() { 
@@ -16,10 +25,11 @@ namespace TuringL.Repository
                                                                 {typeof(IAuthorizeRepository),typeof(AuthorizeUnitOfWorkRepository)},
                                                                 {typeof(IUserRepository),typeof(UserUnitOfWorkRepository)},
                                                                 {typeof(IProductInfoRepository),typeof(ProductInfoUnitOfWorkRepository)},
-                                                                {typeof(IMaintanceRecordRepository),typeof(MaintanceRecordUnitOfWorkRepository)}
+                                                                {typeof(IMaintanceRecordRepository),typeof(MaintanceRecordUnitOfWorkRepository)},
+                                                                {typeof(IInstallInfoRepository),typeof(InstallUnitOfWorkRepository)}
                                                                 };
 
-        public static IUnitOfWorkRepository Get(Type type,IUnitOfWork unitOfWork)
+        public static IUnitOfWorkRepository Get(Type type, IUnitOfWork unitOfWork)
         {
             IUnitOfWorkRepository uow = null;// _list.Where(it => it.GetType() == type).FirstOrDefault();
             if (uow == null)

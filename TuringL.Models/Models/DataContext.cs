@@ -12,6 +12,7 @@ namespace TuringL.Models
         {
         }
 
+        public virtual DbSet<InstallInfo> InstallInfoes { get; set; }
         public virtual DbSet<MaintanceRecord> MaintanceRecords { get; set; }
         public virtual DbSet<ProductAddtionalInfo> ProductAddtionalInfoes { get; set; }
         public virtual DbSet<ProductInfo> ProductInfoes { get; set; }
@@ -20,6 +21,30 @@ namespace TuringL.Models
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<InstallInfo>()
+                .Property(e => e.Principal)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<InstallInfo>()
+                .Property(e => e.MaintancePeriod)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<InstallInfo>()
+                .Property(e => e.Site)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<InstallInfo>()
+                .Property(e => e.InstallMethod)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<InstallInfo>()
+                .Property(e => e.CNumber)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<InstallInfo>()
+                .Property(e => e.ProductId)
+                .IsUnicode(false);
+
             modelBuilder.Entity<MaintanceRecord>()
                 .Property(e => e.KeyWorld)
                 .IsUnicode(false);
@@ -38,6 +63,10 @@ namespace TuringL.Models
 
             modelBuilder.Entity<MaintanceRecord>()
                 .Property(e => e.ProductId)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<MaintanceRecord>()
+                .Property(e => e.FirstPartier)
                 .IsUnicode(false);
 
             modelBuilder.Entity<ProductAddtionalInfo>()
@@ -69,10 +98,14 @@ namespace TuringL.Models
                 .IsUnicode(false);
 
             modelBuilder.Entity<ProductInfo>()
+                .HasMany(e => e.InstallInfoes)
+                .WithOptional(e => e.ProductInfo)
+                .HasForeignKey(e => e.ProductId);
+
+            modelBuilder.Entity<ProductInfo>()
                 .HasMany(e => e.MaintanceRecords)
-                .WithRequired(e => e.ProductInfo)
-                .HasForeignKey(e => e.ProductId)
-                .WillCascadeOnDelete(false);
+                .WithOptional(e => e.ProductInfo)
+                .HasForeignKey(e => e.ProductId);
 
             modelBuilder.Entity<ProductInfo>()
                 .HasMany(e => e.ProductAddtionalInfoes)

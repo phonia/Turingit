@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutoBootStrapper.cs" />
     <Compile Include="AutoMapperBootStrapper.cs" />
     <Compile Include="Base\LambdaConstruct.cs" />
     <Compile Include="Interface\IUserService.cs" />

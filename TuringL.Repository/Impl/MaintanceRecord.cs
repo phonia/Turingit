@@ -6,7 +6,7 @@ using TuringL.Models;
 
 namespace TuringL.Repository
 {
-    public class MaintanceRecordUnitOfWorkRepository:Repository<Models.MaintanceRecord,System.Guid>
+    public class MaintanceRecordUnitOfWorkRepository:Repository<Models.MaintanceRecord,System.Guid>,IMaintanceRecordRepository
     {
         public MaintanceRecordUnitOfWorkRepository(IUnitOfWork unitOfWork)
             : base(unitOfWork)

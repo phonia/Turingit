@@ -68,9 +68,8 @@ namespace RepositoryTest
         {
             try
             {
-                _unitOfWork = RepositoryFactory.GetUnitOfWork();
-
-                IUserRepository userRepository = RepositoryFactory.Get(typeof(IUserRepository), _unitOfWork) as IUserRepository;
+                _unitOfWork = new UnitOfWork();
+                IUserRepository userRepository = new UserUnitOfWorkRepository(_unitOfWork);
                 if (userRepository.GetByKey(_id) == null)
                 {
                     userRepository.Add(new User() { Id = _id, Duty = "管理员", Name = "hy", Email = "bbs", RoleId = "SuperManager",Password="hy" });
@@ -89,9 +88,8 @@ namespace RepositoryTest
         {
             try
             {
-                _unitOfWork = RepositoryFactory.GetUnitOfWork();
-
-                IUserRepository userRepository = RepositoryFactory.Get(typeof(IUserRepository), _unitOfWork) as IUserRepository;
+                _unitOfWork = new UnitOfWork();
+                IUserRepository userRepository = new UserUnitOfWorkRepository(_unitOfWork);
                 List<User> list = userRepository.GetAll().ToList();
                 Assert.IsTrue(list != null && list.Count > 0);
 
@@ -110,9 +108,8 @@ namespace RepositoryTest
         {
             try
             {
-                _unitOfWork = RepositoryFactory.GetUnitOfWork();
-
-                IUserRepository userRepository = RepositoryFactory.Get(typeof(IUserRepository), _unitOfWork) as IUserRepository;
+                _unitOfWork = new UnitOfWork();
+                IUserRepository userRepository = new UserUnitOfWorkRepository(_unitOfWork);
                 User user = userRepository.GetByKey(_id);
 
                 Assert.AreEqual<System.Guid>(user.Id, _id);
@@ -131,9 +128,8 @@ namespace RepositoryTest
 
             try
             {
-                _unitOfWork = RepositoryFactory.GetUnitOfWork();
-
-                IUserRepository userRepository = RepositoryFactory.Get(typeof(IUserRepository), _unitOfWork) as IUserRepository;
+                _unitOfWork = new UnitOfWork();
+                IUserRepository userRepository = new UserUnitOfWorkRepository(_unitOfWork);
 
                 User user = userRepository.GetByKey(_id);
                 user.Name = "polan";
@@ -152,9 +148,8 @@ namespace RepositoryTest
         {
             try
             {
-                _unitOfWork = RepositoryFactory.GetUnitOfWork();
-
-                IUserRepository userRepository = RepositoryFactory.Get(typeof(IUserRepository), _unitOfWork) as IUserRepository;
+                _unitOfWork = new UnitOfWork();
+                IUserRepository userRepository = new UserUnitOfWorkRepository(_unitOfWork);
                 userRepository.Del(new User() { Id = _id });
 
                 _unitOfWork.Commit();

@@ -162,8 +162,8 @@ namespace RepositoryTest
         {
             try
             {
-                _unitOfWork = RepositoryFactory.GetUnitOfWork();
-                IRoleRepository roleRepository = RepositoryFactory.Get(typeof(IRoleRepository), _unitOfWork) as IRoleRepository;
+                _unitOfWork = new UnitOfWork();
+                IRoleRepository roleRepository = new RoleUnitOfWorkRepository(_unitOfWork);
                 Role role = roleRepository.GetByKey("TestUser");
                 Role expect = new Role() { Id = "TestUser", Name = "测试用户" };
                 Assert.AreEqual<Role>(expect,role);
@@ -180,9 +180,8 @@ namespace RepositoryTest
         {
             try
             {
-                _unitOfWork = RepositoryFactory.GetUnitOfWork();
-
-                IRoleRepository roleRepository = RepositoryFactory.Get(typeof(IRoleRepository), _unitOfWork) as IRoleRepository;
+                _unitOfWork = new UnitOfWork();
+                IRoleRepository roleRepository = new RoleUnitOfWorkRepository(_unitOfWork);
                 if (roleRepository.GetByKey("TestUser") == null)
                 {
                     roleRepository.Add(new Role() { Id = "TestUser", Name = "测试用户" });
@@ -201,9 +200,8 @@ namespace RepositoryTest
         {
             try
             {
-                _unitOfWork = RepositoryFactory.GetUnitOfWork();
-
-                IRoleRepository roleRepository = RepositoryFactory.Get(typeof(IRoleRepository), _unitOfWork) as IRoleRepository;
+                _unitOfWork = new UnitOfWork();
+                IRoleRepository roleRepository = new RoleUnitOfWorkRepository(_unitOfWork);
                 Role role = new Role() { Id = "TestUser", Name = "二次测试用户" };
                 roleRepository.Save(role);
 
@@ -220,9 +218,8 @@ namespace RepositoryTest
         {
             try
             {
-                _unitOfWork = RepositoryFactory.GetUnitOfWork();
-
-                IRoleRepository roleRepository = RepositoryFactory.Get(typeof(IRoleRepository), _unitOfWork) as IRoleRepository;
+                _unitOfWork = new UnitOfWork();
+                IRoleRepository roleRepository = new RoleUnitOfWorkRepository(_unitOfWork);
                 Role role = new Role() { Id = "TestUser", Name = "二次测试用户" };
                 roleRepository.Del(role);
 

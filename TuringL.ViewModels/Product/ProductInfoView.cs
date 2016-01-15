@@ -13,5 +13,6 @@ namespace TuringL.ViewModels
         public String Note { get; set; }
         public List<ProductAddtionalInfoView> ProductAddtionalInfos { get; set; }
         public List<MaintanceRecordView> MaintanceRecords { get; set; }
+        public List<InstallInfoView> InstallInfos { get; set; }
     }
 }

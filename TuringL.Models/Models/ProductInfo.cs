@@ -12,6 +12,7 @@ namespace TuringL.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ProductInfo()
         {
+            InstallInfoes = new HashSet<InstallInfo>();
             MaintanceRecords = new HashSet<MaintanceRecord>();
             ProductAddtionalInfoes = new HashSet<ProductAddtionalInfo>();
         }
@@ -30,6 +31,9 @@ namespace TuringL.Models
         public string Note { get; set; }
 
         public int RState { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<InstallInfo> InstallInfoes { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MaintanceRecord> MaintanceRecords { get; set; }

@@ -58,9 +58,11 @@
     <Compile Include="Constant\Constant.cs" />
     <Compile Include="Models\DataContext.cs" />
     <Compile Include="Enum\Enum.cs" />
+    <Compile Include="Models\InstallInfo.cs" />
     <Compile Include="Models\MaintanceRecord.cs" />
     <Compile Include="Models\ProductAddtionalInfo.cs" />
     <Compile Include="Models\ProductInfo.cs" />
+    <Compile Include="Product\InstallInfo.cs" />
     <Compile Include="Product\MaintanceRecord.cs" />
     <Compile Include="Product\ProductAddtionalInfo.cs" />
     <Compile Include="Product\ProductInfo.cs" />

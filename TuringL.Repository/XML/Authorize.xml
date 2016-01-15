@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ArrayOfAuthorize xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Authorize>
-    <RoleName>SuperManager,RegisterUser,Manager</RoleName>
+    <RoleName>SuperManager</RoleName>
     <AuthorityName>UserManager</AuthorityName>
+  </Authorize>
+  <Authorize>
+    <RoleName>SuperManager,Manager</RoleName>
+    <AuthorityName>ProductManager</AuthorityName>
+  </Authorize>
+  <Authorize>
+    <RoleName>SuperManager,Manager</RoleName>
+    <AuthorityName>MaintanceRecordManager</AuthorityName>
   </Authorize>
 </ArrayOfAuthorize>

@@ -13,6 +13,22 @@ namespace TuringL.DServices
 {
     public class ProductInfoService
     {
+        private ResponseBase Service<T>(Func<T> action)where T:ResponseBase
+        {
+            try
+            {
+                return action();
+            }
+            catch (Exception ex)
+            {
+                Log.Write(ex.Message);
+                ResponseBase response = (ResponseBase)Activator.CreateInstance(typeof(T));
+                response.IsSucess = false;
+                response.Message = ex.Message;
+                return response;
+            }
+        }
+
         public GetProductInfoListResponse GetProductInfos(GetProductInfoListRequest request)
         {
             try
@@ -73,18 +89,20 @@ namespace TuringL.DServices
                             ProductAddtionalInfoes = it.ProductAddtionalInfoes.ToList(),
                             Note = it.Note,
                             Rstate = it.RState,
-                            MaintanceRecords = it.MaintanceRecords.ToList()
+                            MaintanceRecords = it.MaintanceRecords.ToList(),
+                            InstallInfoes=it.InstallInfoes.ToList()
                         }).ToList();
                     if (ret == null) return new GetProductInfoByIdResponse() { IsSucess = false, Message = "No Products!" };
                     List<ProductInfo> list = ret.Select(it => new ProductInfo()
                     {
-                        Id = it.Id,
+                        Id=it.Id,
                         Name = it.Name,
                         TypeVersion = it.TypeVersion,
                         ProductAddtionalInfoes = it.ProductAddtionalInfoes.ToList(),
                         Note = it.Note,
                         MaintanceRecords = it.MaintanceRecords,
-                        RState = it.Rstate
+                        RState = it.Rstate,
+                        InstallInfoes=it.InstallInfoes
                     }).ToList();
                     unitOfWork.Commit();
                     return new GetProductInfoByIdResponse() { IsSucess = true, ProductInfoView = list.Map<ProductInfoView, ProductInfo>().FirstOrDefault() };
@@ -95,6 +113,44 @@ namespace TuringL.DServices
                 Log.Write(ex.Message);
                 return new GetProductInfoByIdResponse() { IsSucess = false, Message = ex.Message };
             }
+        }
+
+        public ResponseBase GetProductByName(GetProductInfoByNameRequest request)
+        {
+            return Service<GetProductInfoByNameResponse>(() => {
+                if (request == null) throw new Exception("NUll Input!");
+                using (IUnitOfWork unitOfWork = RepositoryFactory.GetUnitOfWork())
+                {
+                    IProductInfoRepository productInfoRepository = (IProductInfoRepository)RepositoryFactory
+                        .Get(typeof(IProductInfoRepository), unitOfWork);
+                    var ret= productInfoRepository.GetAll().Where(re => re.Name.Contains(request.Name))
+                        .Select(re => new
+                        {
+                            Id = re.Id,
+                            Name = re.Name,
+                            TypeVersion = re.TypeVersion,
+                            ProductAddtionalInfoes = re.ProductAddtionalInfoes.ToList(),
+                            Note = re.Note,
+                            Rstate = re.RState,
+                            MaintanceRecords = re.MaintanceRecords.ToList(),
+                            InstallInfoes = re.InstallInfoes.ToList()
+                        }).ToList();
+                    if (ret == null) throw new Exception("未查询到数据");
+                    List<ProductInfo> list = ret.Select(re => new ProductInfo()
+                    {
+                        Id = re.Id,
+                        Name = re.Name,
+                        TypeVersion = re.TypeVersion,
+                        ProductAddtionalInfoes = re.ProductAddtionalInfoes.ToList(),
+                        Note = re.Note,
+                        MaintanceRecords = re.MaintanceRecords,
+                        RState = re.Rstate,
+                        InstallInfoes = re.InstallInfoes
+                    }).ToList();
+                    unitOfWork.Commit();
+                    return new GetProductInfoByNameResponse() { IsSucess = true, Message = "", ProductInfos = list.Map<ProductInfoView, ProductInfo>() };
+                }
+            });
         }
 
         public RegisterProductResponse RegisterProduct(RegisterProductRequest request)
@@ -183,7 +239,9 @@ namespace TuringL.DServices
                     IMaintanceRecordRepository maintanceRepository = (IMaintanceRecordRepository)RepositoryFactory.Get(typeof(IMaintanceRecordRepository), unitOfWork);
                     MaintanceRecord registerMaintanceRecord = request.MaintanceRecordView.Map<MaintanceRecord, MaintanceRecordView>();
                     registerMaintanceRecord.ProductId = request.ProductId;
+                    registerMaintanceRecord.MiantanceUser = request.UserName;
                     registerMaintanceRecord.Register();
+                    maintanceRepository.Add(registerMaintanceRecord);
                     unitOfWork.Commit();
                     response.IsSucess = true;
                     response.MaintanceRecordView = registerMaintanceRecord.Map<MaintanceRecordView, MaintanceRecord>();
@@ -198,11 +256,78 @@ namespace TuringL.DServices
             return response;
         }
 
+        public ResponseBase RegisterInstallInfo(RequestBase request)
+        {
+            RegisterInstallInfoRequset registerRequest = (RegisterInstallInfoRequset)request;
+            return Service<RegisterInstallInfoResponse>(() => {
+                RegisterInstallInfoResponse response = new RegisterInstallInfoResponse();
+                if (registerRequest==null) throw new Exception("null input!");
+                using (IUnitOfWork unitOfwork = RepositoryFactory.GetUnitOfWork())
+                {
+                    IInstallInfoRepository installRepository = (IInstallInfoRepository)RepositoryFactory
+                        .Get(typeof(IInstallInfoRepository), unitOfwork);
+                    InstallInfo register = new InstallInfo() {
+                        CNumber=registerRequest.CNumber,
+                        InstallMethod=registerRequest.InstallMethod,
+                        MaintancePeriod=registerRequest.MaintancePeriod,
+                        Principal=registerRequest.Principal,
+                        ProductId=registerRequest.ProductId,
+                        Site=registerRequest.Site,
+                        StartTime=registerRequest.StartTime
+                    };
+                    register.Register();
+                    installRepository.Add(register);
+                    unitOfwork.Commit();
+                    response.IsSucess = true;
+                    response.InstallInfo = register.Map<InstallInfoView, InstallInfo>();
+                }
+                return response;
+            });
+        }
+
         public DelProductInfoResponse DelProductInfo(DelProductInfoRequest request)
         {
-            DelProductInfoResponse response = new DelProductInfoResponse();
+            return (DelProductInfoResponse)Service<DelProductInfoResponse>(() => {
+                if (request == null) throw new Exception("null input!");
+                using (IUnitOfWork unitOfWork = RepositoryFactory.GetUnitOfWork())
+                {
+                    IProductInfoRepository productInfoRepository = (IProductInfoRepository)RepositoryFactory
+                        .Get(typeof(IProductInfoRepository), unitOfWork);
+                    ProductInfo delProductInfo = productInfoRepository.GetAll().Include("InstallInfoes").Include("MaintanceRecords").Include("ProductAddtionalInfoes")
+                        .Where(it=>it.Id==request.ProductId).FirstOrDefault();
+                    if (delProductInfo == null) throw new Exception("不存在或已删除的产品信息！");
+                    //if (delProductInfo.InstallInfoes != null)
+                    //{
+                    //    IInstallInfoRepository installInfoRepository = (IInstallInfoRepository)RepositoryFactory
+                    //        .Get(typeof(IInstallInfoRepository), unitOfWork);
+                    //}
+                    //if (delProductInfo.MaintanceRecords != null)
+                    //{ }
+                    //if (delProductInfo.ProductAddtionalInfoes != null)
+                    //{ }
+                    productInfoRepository.Del(delProductInfo);
+                    unitOfWork.Commit();
+                    return new DelProductInfoResponse() { IsSucess = true, Message = "" };
+                }
+            });
+        }
 
-            return response;
+        public ResponseBase DelMaintanceRecord(DelMaintanceRecordRequest request)
+        {
+            return (DelMaintanceRecordResponse)Service<DelMaintanceRecordResponse>(() =>
+            {
+                if (request == null) throw new Exception("null Input!");
+                using (IUnitOfWork unitOfWork = RepositoryFactory.GetUnitOfWork())
+                {
+                    IMaintanceRecordRepository maintanceRecordRepository = (IMaintanceRecordRepository)RepositoryFactory
+                        .Get(typeof(IMaintanceRecordRepository), unitOfWork);
+                    MaintanceRecord delMaintanceRecord = maintanceRecordRepository.GetByKey(System.Guid.Parse(request.MaintanceRecordId));
+                    if (delMaintanceRecord == null) throw new Exception("不存在或已删除的维护信息");
+                    maintanceRecordRepository.Del(delMaintanceRecord);
+                    unitOfWork.Commit();
+                    return new DelMaintanceRecordResponse() { IsSucess = true, Message = "" };
+                }
+            });
         }
 
         public DelProductAddtionInfoResponse DelProductAddtionInfo(DelProductAddtionInfoRequest request)
